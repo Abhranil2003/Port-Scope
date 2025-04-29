@@ -130,6 +130,9 @@ python main.py example.com -o csv --scan-type quick
 # 🧠 OS detection scan with JSON output
 python main.py example.com -o json --scan-type os
 
+# 🛠️ Custom Nmap scan using user-defined flags
+python main.py example.com --scan-type custom --custom-options "-sS -Pn -T4" -o pdf
+
 # 🎯 Scan specific ports and output to multiple formats
 python main.py 192.168.0.1 -p 22,80,443 -o csv pdf
 
@@ -141,6 +144,7 @@ python cli.py example.com quick -r html --schedule --delay 30
 
 # 🔁 Repeated Scan (3 times, 60 seconds apart) [CLI only]
 python cli.py example.com quick -r csv --repeated --interval 60 --repetitions 3
+
 
 
 ```

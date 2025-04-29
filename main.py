@@ -1,12 +1,12 @@
 import argparse
 import logging
-from src.scanner import Scanner
+from scanner import Scanner
 from parsers.nmap_parser import NmapParser
-from reporters.csv_reporter import CSVReporter
-from reporters.pdf_reporter import PDFReporter
-from reporters.html_reporter import HTMLReporter
-from reporters.text_reporter import TextReporter
-from reporters.json_reporter import JSONReporter  # Added import
+from reporter.csv_reporter import CSVReporter
+from reporter.pdf_reporter import PDFReporter
+from reporter.html_reporter import HTMLReporter
+from reporter.text_reporter import TextReporter
+from reporter.json_reporter import JSONReporter  # Added import
 from utils import save_raw_output, save_json_output
 
 logging.basicConfig(level=logging.INFO)

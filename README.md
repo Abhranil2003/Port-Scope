@@ -25,31 +25,30 @@ project-root/
 │
 ├── main.py                              # Entry point
 │
-├── src/
-│   ├── scanner.py                       # Core scanning engine
-│   │
-│   ├── cli.py                           # Command-line interface for initiating scans and generating reports
-│   │
-│   ├── scheduler.py                     # Scan scheduling logic
-│   │
-│   ├── utils.py                         # Helper functions
-│   │
-│   ├── parsers/                         # Nmap & web scanner output parser
-│   │   ├── nmap_parser.py
-│   │   └──_init_.py
-│   │   
-│   ├── reporter/                        # All report generators
-│   │   ├── html_reporter.py
-│   │   ├── pdf_reporter.py
-│   │   ├── csv_reporter.py
-│   │   ├── json_reporter.py
-│   │   ├── text_reporter.py
-│   │   ├── _init_.py
-│   │   ├── assets/
-│   │   │   ├── script.js
-│   │   │   └── style.css
-│   │   └── templates/
-│   │   │   └── report_template.html
+├── scanner.py                           # Core scanning engine
+│
+├── cli.py                               # Command-line interface for initiating scans and generating reports
+│   
+├── scheduler.py                         # Scan scheduling logic
+│   
+├── utils.py                             # Helper functions
+│   
+├── parsers/                             # Nmap & web scanner output parser
+│   ├── nmap_parser.py
+│   └──_init_.py
+│     
+├── reporter/                            # All report generators
+│   ├── html_reporter.py
+│   ├── pdf_reporter.py
+│   ├── csv_reporter.py
+│   ├── json_reporter.py
+│   ├── text_reporter.py
+│   ├── _init_.py
+│   ├── assets/
+│   │   ├── script.js
+│   │   └── style.css
+│   └── templates/
+│   │   └── report_template.html
 │
 ├── tests/                               # All test files
 │   ├── test_reporters/                  # Output directory for reports
@@ -69,8 +68,16 @@ project-root/
 ├── logs/ 
 │        
 ├── sample_reports/ 
-│        
+│  
+├── docs/
+│   └── CONTRIBUTING
+│
 ├── requirements.txt
+│
+├──SECURITY.md
+│
+├──CODE_OF_CONDUCT.md
+│
 └── README.md
 ```
 

@@ -1,7 +1,7 @@
 import os
 import logging
 from datetime import datetime
-from jinja2 import Environment, FileSystemLoader # type: ignore
+from jinja2 import Environment, FileSystemLoader, select_autoescape  # type: ignore
 from utils import ensure_directory, get_output_path
 
 class HTMLReporter:
@@ -16,7 +16,10 @@ class HTMLReporter:
             self.logger.error("No data provided for HTML report generation.")
             return None
 
-        env = Environment(loader=FileSystemLoader(self.template_dir))
+        env = Environment(
+            loader=FileSystemLoader(self.template_dir),
+            autoescape=select_autoescape(['html', 'xml'])  # ✅ Enables safe autoescaping
+        )
         template = env.get_template("report_template.html")
         html_content = template.render(parsed_data=parsed_data)
         filename = f"scan_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"

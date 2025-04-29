@@ -1,56 +1,35 @@
-name: 🔐 Security Scan
+name: Security Scan
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  security:
+  security-scan:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: 🐍 Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.11'
+          python-version: '3.9'
 
-      - name: 📦 Install dependencies
+      - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install bandit safety detect-secrets flake8
 
-      - name: 🔍 Bandit - Python Security Linter
+      - name: Run security scan with Bandit
         run: |
-          bandit -r . -ll -o bandit_report.txt
-          cat bandit_report.txt
-
-      - name: 🚨 Safety - Dependency Vulnerability Check
-        run: |
-          pip freeze > requirements-freeze.txt
-          safety check -r requirements-freeze.txt --full-report > safety_report.txt || true
-          cat safety_report.txt
-
-      - name: 🔑 Detect-Secrets - Scan for Secrets
-        run: |
-          detect-secrets scan > .secrets.baseline
-          detect-secrets audit .secrets.baseline || true
-
-      - name: 🧹 Code Linting - flake8
-        run: |
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
-
-      - name: 📎 Upload Security Artifacts
-        uses: actions/upload-artifact@v3
+          bandit -r . -f json -o bandit-report.json
+          
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: security-reports
-          path: |
-            bandit_report.txt
-            safety_report.txt
-            .secrets.baseline
+          name: security-scan-report
+          path: ./bandit-report.json

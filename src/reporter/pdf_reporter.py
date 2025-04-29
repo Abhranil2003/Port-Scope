@@ -1,8 +1,8 @@
 import os
 import logging
 from datetime import datetime
-import pdfkit # type: ignore
-from jinja2 import Environment, FileSystemLoader
+import pdfkit  # type: ignore
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 from utils import ensure_directory, get_output_path
 
 class PDFReporter:
@@ -17,7 +17,10 @@ class PDFReporter:
             self.logger.error("No data provided for PDF report generation.")
             return None
 
-        env = Environment(loader=FileSystemLoader(self.template_dir))
+        env = Environment(
+            loader=FileSystemLoader(self.template_dir),
+            autoescape=select_autoescape(['html', 'xml'])
+        )
         template = env.get_template("report_template.html")
         html_content = template.render(parsed_data=parsed_data)
         filename = f"scan_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"

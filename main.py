@@ -12,22 +12,22 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("main")
 
 def main():
-    parser = argparse.ArgumentParser(description="🔍 Advanced Nmap Scanner & Reporter")
-    parser.add_argument("target", help="Target IP address or hostname")
+    parser = argparse.ArgumentParser(description="🔍 Port & Web Scanner with Reporting")
+    parser.add_argument("target", help="Target IP address, domain, or URL")
     parser.add_argument("-p", "--ports", help="Ports to scan (e.g., 22,80,443)")
     parser.add_argument("-o", "--output", nargs="*", default=["csv"],
                         help="Output formats: csv, pdf, html, text, json")
-    parser.add_argument("--scan-type", choices=["quick", "full", "os", "custom"], default="full",
+    parser.add_argument("--scan-type", choices=["quick", "full", "os", "custom", "web"], default="full",
                         help="Type of scan to perform (default: full)")
     parser.add_argument("--custom-options", help="Custom Nmap options (e.g., '-sS -Pn -T4')")
-    parser.add_argument("--raw", action="store_true", help="Save raw Nmap output")
+    parser.add_argument("--raw", action="store_true", help="Save raw output")
     args = parser.parse_args()
 
     # Step 1: Initialize scanner
     scanner = Scanner(args.target)
     logger.info(f"🎯 Scanning target: {args.target}")
 
-    # Step 2: Choose scan type
+    # Step 2: Perform scan
     if args.scan_type == "quick":
         scan_result = scanner.quick_scan()
     elif args.scan_type == "os":
@@ -38,6 +38,8 @@ def main():
             return
         custom_flags = args.custom_options.strip().split()
         scan_result = scanner.custom_scan(custom_flags)
+    elif args.scan_type == "web":
+        scan_result = scanner.web_scan()
     else:
         scan_result = scanner.full_scan()
 
@@ -51,7 +53,7 @@ def main():
     if args.raw:
         save_raw_output(scan_result["raw_output"], folder="logs")
 
-    # Step 4: Generate reports
+    # Step 4: Generate selected reports
     for fmt in args.output:
         fmt = fmt.lower()
         if fmt == "csv":

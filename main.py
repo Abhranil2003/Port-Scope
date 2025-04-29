@@ -17,8 +17,9 @@ def main():
     parser.add_argument("-p", "--ports", help="Ports to scan (e.g., 22,80,443)")
     parser.add_argument("-o", "--output", nargs="*", default=["csv"],
                         help="Output formats: csv, pdf, html, text, json")
-    parser.add_argument("--scan-type", choices=["quick", "full", "os"], default="full",
+    parser.add_argument("--scan-type", choices=["quick", "full", "os", "custom"], default="full",
                         help="Type of scan to perform (default: full)")
+    parser.add_argument("--custom-options", help="Custom Nmap options (e.g., '-sS -Pn -T4')")
     parser.add_argument("--raw", action="store_true", help="Save raw Nmap output")
     args = parser.parse_args()
 
@@ -26,11 +27,17 @@ def main():
     scanner = Scanner(args.target)
     logger.info(f"🎯 Scanning target: {args.target}")
 
-    # Step 2: Choose scan type and get parsed + raw output
+    # Step 2: Choose scan type
     if args.scan_type == "quick":
         scan_result = scanner.quick_scan()
     elif args.scan_type == "os":
         scan_result = scanner.os_detection_scan()
+    elif args.scan_type == "custom":
+        if not args.custom_options:
+            logger.error("❌ Custom scan type requires --custom-options.")
+            return
+        custom_flags = args.custom_options.strip().split()
+        scan_result = scanner.custom_scan(custom_flags)
     else:
         scan_result = scanner.full_scan()
 
@@ -40,11 +47,11 @@ def main():
 
     parsed_data = scan_result["parsed"]
 
-    # Step 3: Optionally save raw Nmap output
+    # Step 3: Optionally save raw output
     if args.raw:
         save_raw_output(scan_result["raw_output"], folder="logs")
 
-    # Step 4: Generate selected reports
+    # Step 4: Generate reports
     for fmt in args.output:
         fmt = fmt.lower()
         if fmt == "csv":

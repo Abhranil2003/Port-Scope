@@ -1,7 +1,7 @@
 import subprocess
 import logging
 import re
-from nmap_parser import NmapParser
+from nmap_parser import NmapParser # type: ignore
 
 class Scanner:
     def __init__(self, target):

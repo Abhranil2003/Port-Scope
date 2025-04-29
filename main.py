@@ -22,7 +22,7 @@ def main():
     args = parser.parse_args()
 
     # Step 1: Perform scan
-    scanner = Scanner()
+    scanner = Scanner(args.target)
     logger.info(f"🎯 Scanning target: {args.target}")
     nmap_output = scanner.scan(args.target, ports=args.ports)
 

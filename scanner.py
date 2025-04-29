@@ -1,7 +1,9 @@
 import subprocess  # nosec
 import logging
 import re
+import requests
 from parsers.nmap_parser import NmapParser  # type: ignore
+from bs4 import BeautifulSoup  # type: ignore
 
 class Scanner:
     def __init__(self, target):
@@ -12,15 +14,12 @@ class Scanner:
         self.parser = NmapParser()
 
     def _is_valid_target(self, target):
-        # Allow simple domains, IPv4 addresses, or hostnames
         ip_pattern = r"^(\d{1,3}\.){3}\d{1,3}$"
         domain_pattern = r"^[a-zA-Z0-9.-]+$"
-        return re.match(ip_pattern, target) or re.match(domain_pattern, target)
+        return target.startswith("http://") or target.startswith("https://") or \
+               re.match(ip_pattern, target) or re.match(domain_pattern, target)
 
     def _run_nmap(self, options):
-        """
-        Internal helper to run nmap with given options and parse result.
-        """
         command = ["nmap"] + options + [self.target]
         self.logger.info(f"Running command: {' '.join(command)}")
 
@@ -30,12 +29,43 @@ class Scanner:
                 capture_output=True,
                 text=True,
                 check=True,
-                shell=False  # Explicitly disable shell
+                shell=False
             )
+            raw_output = result.stdout
+            parsed = self.parser.parse(raw_output)
             self.logger.info("Scan completed successfully.")
-            return self.parser.parse(result.stdout)
+            return {
+                "parsed": parsed,
+                "raw_output": raw_output
+            }
         except subprocess.CalledProcessError as e:
             self.logger.error(f"Scan failed: {e}")
+            return None
+
+    def _run_web_scan(self):
+        self.logger.info(f"Running web scan for: {self.target}")
+        try:
+            response = requests.get(self.target, timeout=10)
+            raw = f"{response.status_code}\n{response.headers}\n\n{response.text[:1000]}"
+            soup = BeautifulSoup(response.text, "html.parser")
+            title = soup.title.string.strip() if soup.title and soup.title.string else "N/A"
+
+            parsed = {
+                "url": self.target,
+                "status_code": response.status_code,
+                "headers": dict(response.headers),
+                "title": title,
+                "server": response.headers.get("Server", "N/A"),
+                "content_type": response.headers.get("Content-Type", "N/A"),
+            }
+
+            return {
+                "parsed": parsed,
+                "raw_output": raw
+            }
+
+        except Exception as e:
+            self.logger.error(f"Web scan failed: {e}")
             return None
 
     def quick_scan(self):
@@ -49,3 +79,6 @@ class Scanner:
 
     def custom_scan(self, custom_options):
         return self._run_nmap(custom_options)
+
+    def web_scan(self):
+        return self._run_web_scan()

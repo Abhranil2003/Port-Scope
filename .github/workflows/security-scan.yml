@@ -1,28 +1,39 @@
+name: 🔐 Security Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
   security-scan:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Python
+      - name: 🐍 Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: |
           pip install -r requirements.txt
 
-      - name: Install Bandit
+      - name: 🔒 Install Bandit
         run: |
           pip install bandit
 
-      - name: Run security scan with Bandit
+      - name: 🕵️ Run Bandit security scan
         run: |
           bandit -r . -f json -o bandit-report.json
 
-      - name: Upload artifact
+      - name: 📤 Upload Bandit scan report
         uses: actions/upload-artifact@v4
         with:
           name: security-scan-report

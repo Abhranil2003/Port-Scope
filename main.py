@@ -1,7 +1,6 @@
 import argparse
 import logging
 from scanner import Scanner
-from parsers.nmap_parser import NmapParser
 from reporter.csv_reporter import CSVReporter
 from reporter.pdf_reporter import PDFReporter
 from reporter.html_reporter import HTMLReporter
@@ -23,39 +22,41 @@ def main():
     parser.add_argument("--raw", action="store_true", help="Save raw Nmap output")
     args = parser.parse_args()
 
-    # Step 1: Perform scan
+    # Step 1: Initialize scanner
     scanner = Scanner(args.target)
     logger.info(f"🎯 Scanning target: {args.target}")
 
-    # Step 2: Choose scan type
+    # Step 2: Choose scan type and get parsed + raw output
     if args.scan_type == "quick":
-        nmap_output = scanner.quick_scan()
+        scan_result = scanner.quick_scan()
     elif args.scan_type == "os":
-        nmap_output = scanner.os_detection_scan()
+        scan_result = scanner.os_detection_scan()
     else:
-        nmap_output = scanner.full_scan()
+        scan_result = scanner.full_scan()
 
-    # Step 3: Optionally save raw output
+    if not scan_result:
+        logger.error("❌ Scan failed or returned no data.")
+        return
+
+    parsed_data = scan_result["parsed"]
+
+    # Step 3: Optionally save raw Nmap output
     if args.raw:
-        save_raw_output(nmap_output, folder="logs")
+        save_raw_output(scan_result["raw_output"], folder="logs")
 
-    # Step 4: Parse output
-    parser = NmapParser()
-    parsed_data = parser.parse(nmap_output)
-
-    # Step 5: Generate selected reports
+    # Step 4: Generate selected reports
     for fmt in args.output:
         fmt = fmt.lower()
         if fmt == "csv":
-            CSVReporter(output_dir="test_reporters").generate_report(parsed_data)
+            CSVReporter(scanner, output_dir="test_reporters").generate_report(parsed_data)
         elif fmt == "pdf":
-            PDFReporter(output_dir="test_reporters").generate_report(parsed_data)
+            PDFReporter(scanner, output_dir="test_reporters").generate_report(parsed_data)
         elif fmt == "html":
-            HTMLReporter(output_dir="test_reporters").generate_report(parsed_data)
+            HTMLReporter(scanner, output_dir="test_reporters").generate_report(parsed_data)
         elif fmt == "text":
-            TextReporter(output_dir="test_reporters").generate_report(parsed_data)
+            TextReporter(scanner, output_dir="test_reporters").generate_report(parsed_data)
         elif fmt == "json":
-            JSONReporter(output_dir="test_reporters").generate_report(parsed_data)
+            JSONReporter(scanner, output_dir="test_reporters").generate_report(parsed_data)
         else:
             logger.warning(f"⚠️ Unsupported output format: {fmt}")
 

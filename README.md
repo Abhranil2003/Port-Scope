@@ -121,17 +121,21 @@ brew install wkhtmltopdf
 ## 🧪 Usage
 
 ```bash
-# Scan a web application and save report in HTML
-python main.py --target https://example.com --scan-type web --output html
+# Basic quick scan and HTML output
+python main.py example.com -o html
 
-# Run a network scan with CSV output
-python main.py --target 192.168.0.1 --scan-type network --output csv
+# Scan specific ports and output to multiple formats
+python main.py 192.168.0.1 -p 22,80,443 -o csv pdf
 
-# Delayed scan
-python main.py --target https://example.com --scan-type web --output pdf --delay 30
+# Save raw Nmap output
+python main.py scanme.nmap.org -o text --raw
 
-# Repeated scan
-python main.py --target 127.0.0.1 --scan-type network --output json --repeat 3 --interval 60
+# ⏱️ Delayed Scan (starts after 30 seconds)
+python cli.py example.com quick -r html --schedule --delay 30
+
+# 🔁 Repeated Scan (3 times, 60 seconds apart)
+python cli.py example.com quick -r csv --repeated --interval 60 --repetitions 3
+
 ```
 
 ---

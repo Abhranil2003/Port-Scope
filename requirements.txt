@@ -3,3 +3,5 @@ pdfkit
 pandas  # optional fallback for CSV
 python-dateutil
 bandit
+requests
+beautifulsoup4

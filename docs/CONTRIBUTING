@@ -10,7 +10,7 @@ We love contributions from the community! Here’s how you can contribute to **P
 2. **Clone Your Fork**:
    - Clone your fork to your local machine using:
      ```bash
-     git clone https://github.com/your-username/Port-Scope.git
+     git clone https://github.com/Abhranil2003/Port-Scope.git
      ```
 
 3. **Create a New Branch**:
@@ -41,6 +41,6 @@ We love contributions from the community! Here’s how you can contribute to **P
 Please follow the **[Code of Conduct](./CODE_OF_CONDUCT.md)** to ensure a welcoming and respectful environment for all contributors.
 
 ### Reporting Issues
-- If you find any bugs or have feature requests, feel free to open an **[issue](https://github.com/your-username/Port-Scope/issues)**.
+- If you find any bugs or have feature requests, feel free to open an **[issue](https://github.com/Abhranil2003/Port-Scope/issues)**.
 
 We appreciate all contributions, and thank you for helping make **Port Scope** even better!

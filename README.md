@@ -174,7 +174,7 @@ We welcome suggestions, bug reports, or any thoughts you may have! Here’s how 
 - 🐛 **Found a bug?** [Open an issue](https://github.com/Abhranil2003/port-scope/issues) on GitHub with details and steps to reproduce.
 - 🌟 **Have a feature request?** Create a [feature request issue](https://github.com/Abhranil2003/port-scope/issues/new?labels=enhancement).
 - 📬 **General feedback or questions?** Start a [discussion](https://github.com/Abhranil2003/port-scope/discussions).
-- 🙌 **Want to contribute?** Check out our contributing section.
+- 🙌 **Want to contribute?** Check out our [Contributing Guide](#CONTRIBUTING).
 
 ### 🗣️ Common Feedback
 

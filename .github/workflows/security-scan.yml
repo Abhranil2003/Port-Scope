@@ -2,22 +2,21 @@ name: 🔐 Security Scan
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  security-scan:
+  bandit-scan:
+    name: 🛡️ Bandit Security Scan
     runs-on: ubuntu-latest
 
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: 🐍 Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
@@ -29,12 +28,11 @@ jobs:
         run: |
           pip install bandit
 
-      - name: 🕵️ Run Bandit security scan
+      - name: 🧪 Run Bandit scan and output SARIF
         run: |
-          bandit -r . -f json -o bandit-report.json
+          bandit -r . -f sarif -o bandit-results.sarif
 
-      - name: 📤 Upload Bandit scan report
-        uses: actions/upload-artifact@v4
+      - name: 📤 Upload Bandit SARIF results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
         with:
-          name: security-scan-report
-          path: ./bandit-report.json
+          sarif_file: bandit-results.sarif

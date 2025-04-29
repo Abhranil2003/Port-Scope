@@ -2,3 +2,5 @@ jinja2
 pdfkit
 pandas  # optional fallback for CSV
 python-dateutil
+bandit
+bandit-sarif

@@ -1,7 +1,7 @@
 import argparse
 import logging
-from scanner import Scanner
-from nmap_parser import NmapParser
+from src.scanner import Scanner
+from parsers.nmap_parser import NmapParser
 from reporters.csv_reporter import CSVReporter
 from reporters.pdf_reporter import PDFReporter
 from reporters.html_reporter import HTMLReporter

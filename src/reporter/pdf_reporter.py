@@ -1,0 +1,32 @@
+import os
+import logging
+from datetime import datetime
+import pdfkit # type: ignore
+from jinja2 import Environment, FileSystemLoader
+from utils import ensure_directory, get_output_path
+
+class PDFReporter:
+    def __init__(self, scanner, output_dir="reports", template_dir="templates"):
+        self.scanner = scanner
+        self.output_dir = ensure_directory(output_dir)
+        self.template_dir = template_dir
+        self.logger = logging.getLogger(__name__)
+
+    def generate_report(self, parsed_data):
+        if not parsed_data:
+            self.logger.error("No data provided for PDF report generation.")
+            return None
+
+        env = Environment(loader=FileSystemLoader(self.template_dir))
+        template = env.get_template("report_template.html")
+        html_content = template.render(parsed_data=parsed_data)
+        filename = f"scan_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+        filepath = get_output_path(self.output_dir, filename)
+
+        try:
+            pdfkit.from_string(html_content, filepath)
+            self.logger.info(f"PDF report generated: {filepath}")
+            return filepath
+        except Exception as e:
+            self.logger.error(f"Failed to generate PDF report: {e}")
+            return None

@@ -1,7 +1,7 @@
-import subprocess
+import subprocess  # nosec
 import logging
 import re
-from nmap_parser import NmapParser # type: ignore
+from nmap_parser import NmapParser  # type: ignore
 
 class Scanner:
     def __init__(self, target):
@@ -25,7 +25,13 @@ class Scanner:
         self.logger.info(f"Running command: {' '.join(command)}")
 
         try:
-            result = subprocess.run(command, capture_output=True, text=True, check=True)
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                check=True,
+                shell=False  # Explicitly disable shell
+            )
             self.logger.info("Scan completed successfully.")
             return self.parser.parse(result.stdout)
         except subprocess.CalledProcessError as e:

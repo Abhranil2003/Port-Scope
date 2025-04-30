@@ -183,7 +183,7 @@ python cli.py example.com quick -r csv --repeated --interval 60 --repetitions 3
 ```
 
 ### Sample HTML Output
-![sample](https://yourimagehost.com/report_preview.png)
+![sample](https://collection.cloudinary.com/duo4xpdzp/47f91c349c11896e2e82420811f5ceb0?)
 
 ---
 

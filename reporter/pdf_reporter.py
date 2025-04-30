@@ -9,13 +9,14 @@ class PDFReporter:
     def __init__(self, scanner, output_dir="reports", template_dir=None):
         self.scanner = scanner
         self.output_dir = ensure_directory(output_dir)
-        if template_dir is None:
-            self.template_dir = os.path.join(os.path.dirname(__file__), "templates")
-        else:
-            self.template_dir = template_dir
+
+        # Set template and assets directories
+        base_dir = os.path.dirname(__file__)
+        self.template_dir = os.path.join(base_dir, "templates") if template_dir is None else template_dir
+        self.assets_dir = os.path.join(base_dir, "assets")
         self.logger = logging.getLogger(__name__)
 
-        # ✅ Explicitly set path to wkhtmltopdf for Windows compatibility
+        # Windows-specific wkhtmltopdf configuration
         wkhtmltopdf_path = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
         self.pdf_config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
 
@@ -25,16 +26,16 @@ class PDFReporter:
             return None
 
         env = Environment(
-            loader=FileSystemLoader(self.template_dir),
+            loader=FileSystemLoader([self.template_dir, self.assets_dir]),  # support template + local assets
             autoescape=select_autoescape(['html', 'xml'])
         )
         template = env.get_template("report_template.html")
         html_content = template.render(parsed_data=parsed_data)
+
         filename = f"scan_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
         filepath = get_output_path(self.output_dir, filename)
 
         try:
-            # ✅ Use configured wkhtmltopdf
             pdfkit.from_string(html_content, filepath, configuration=self.pdf_config)
             self.logger.info(f"PDF report generated: {filepath}")
             return filepath

@@ -47,7 +47,8 @@ body {
     animation: fadeInTable 1s ease-in-out;
 }
 
-.ports-table th, .ports-table td {
+.ports-table th,
+.ports-table td {
     border: 1px solid #ccc;
     padding: 8px;
     text-align: left;
@@ -95,30 +96,59 @@ body {
 
 /* Animations */
 @keyframes fadeIn {
-    0% {
+    from {
         opacity: 0;
     }
-    100% {
+    to {
         opacity: 1;
     }
 }
 
 @keyframes slideIn {
-    0% {
+    from {
         transform: translateX(-50px);
         opacity: 0;
     }
-    100% {
+    to {
         transform: translateX(0);
         opacity: 1;
     }
 }
 
 @keyframes fadeInTable {
-    0% {
+    from {
         opacity: 0;
     }
-    100% {
+    to {
         opacity: 1;
+    }
+}
+
+/* ======== Fallbacks ======== */
+
+/* When printed or rendered without full CSS (like in wkhtmltopdf) */
+@media print {
+    .ports-table,
+    .os-list {
+        animation: none !important;
+    }
+
+    .table-row:hover,
+    .os-item:hover {
+        background-color: #f9f9f9;
+        transform: none !important;
+    }
+
+    .footer {
+        animation: none !important;
+    }
+
+    .section-title {
+        animation: none !important;
+    }
+
+    body {
+        background-color: #ffffff !important;
+        color: #000 !important;
     }
 }

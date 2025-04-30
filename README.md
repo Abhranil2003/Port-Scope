@@ -182,8 +182,8 @@ python cli.py example.com quick -r csv --repeated --interval 60 --repetitions 3
 ✅ Report saved to test_reporters/scan_report_20250429_133212.html
 ```
 
-### Sample HTML Output
-![sample](https://yourimagehost.com/report_preview.png)
+### 📸 Report Preview Of A Sample HTML Output
+![sample](https://i.postimg.cc/1XFttmQC/sample.png)
 
 ---
 

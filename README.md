@@ -90,6 +90,25 @@ project-root/
   - `nmap` must be installed for network scanning
   - `wkhtmltopdf` required for PDF report generation (used by `pdfkit`)
 
+> 💡 **To install wkhtmltopdf**:
+>
+> - Download from [https://wkhtmltopdf.org/downloads.html](https://wkhtmltopdf.org/downloads.html)
+> - During installation, make sure to **add it to your system PATH**
+> - You can verify installation by running:
+>
+>   ```bash
+>   wkhtmltopdf --version
+>   ```
+
+> ⚠️ If `wkhtmltopdf` is not found or PDF generation fails, update your `PATH` or manually specify its location in the code using:
+>
+> ```python
+> import pdfkit
+> config = pdfkit.configuration(wkhtmltopdf=r'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+> pdfkit.from_string(html_content, filepath, configuration=config)
+> ```
+
+
 ---
 
 ## 📦 Installation

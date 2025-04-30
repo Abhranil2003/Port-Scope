@@ -15,6 +15,10 @@ class PDFReporter:
             self.template_dir = template_dir
         self.logger = logging.getLogger(__name__)
 
+        # ✅ Explicitly set path to wkhtmltopdf for Windows compatibility
+        wkhtmltopdf_path = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+        self.pdf_config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+
     def generate_report(self, parsed_data):
         if not parsed_data:
             self.logger.error("No data provided for PDF report generation.")
@@ -30,7 +34,8 @@ class PDFReporter:
         filepath = get_output_path(self.output_dir, filename)
 
         try:
-            pdfkit.from_string(html_content, filepath)
+            # ✅ Use configured wkhtmltopdf
+            pdfkit.from_string(html_content, filepath, configuration=self.pdf_config)
             self.logger.info(f"PDF report generated: {filepath}")
             return filepath
         except Exception as e:

@@ -1,154 +1,35 @@
-/* Basic Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Body and layout */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
-    padding: 20px;
-}
-
-.content {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 1s ease-in-out;
-}
-
-.title {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 20px;
-}
-
-/* Section styling */
-.section {
-    margin-bottom: 30px;
-}
-
-.section-title {
-    color: #34495e;
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    animation: slideIn 1s ease-out;
-}
-
-/* Table Styling */
-.ports-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    animation: fadeInTable 1s ease-in-out;
-}
-
-.ports-table th,
-.ports-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-}
-
-.ports-table th {
-    background-color: #ecf0f1;
-}
-
-.table-row {
-    background-color: #ffffff;
-    transition: background-color 0.3s;
-}
-
-.table-row:hover {
-    background-color: #f1f1f1;
-}
-
-/* OS List Styling */
-.os-list {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.os-item {
-    background-color: #ecf0f1;
-    padding: 5px;
-    margin: 5px 0;
-    border-radius: 5px;
-    transition: transform 0.3s ease;
-}
-
-.os-item:hover {
-    transform: scale(1.05);
-}
-
-/* Footer */
-.footer {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 12px;
-    color: #7f8c8d;
-    animation: fadeIn 1s ease-in-out;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes fadeInTable {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* ======== Fallbacks ======== */
-
-/* When printed or rendered without full CSS (like in wkhtmltopdf) */
+/* Additional custom styles beyond Tailwind */
 @media print {
-    .ports-table,
-    .os-list {
-        animation: none !important;
-    }
-
-    .table-row:hover,
-    .os-item:hover {
-        background-color: #f9f9f9;
-        transform: none !important;
-    }
-
-    .footer {
-        animation: none !important;
-    }
-
-    .section-title {
-        animation: none !important;
-    }
-
     body {
-        background-color: #ffffff !important;
-        color: #000 !important;
+      background-color: white !important;
+      color: black !important;
     }
-}
+    
+    .no-print {
+      display: none !important;
+    }
+    
+    .container {
+      max-width: 100% !important;
+      padding: 0 !important;
+    }
+    
+    .section-header {
+      background-color: #f3f4f6 !important;
+      color: black !important;
+    }
+    
+    .section-content {
+      display: block !important;
+    }
+    
+    button, .fa-chevron-down {
+      display: none !important;
+    }
+  }
+  
+  /* Animation for collapsible sections */
+  .section-content {
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+  }

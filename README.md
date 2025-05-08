@@ -85,28 +85,14 @@ project-root/
 
 ## 🛠️ Prerequisites
 
-- Python 3.7+
-- Tools:
-  - `nmap` must be installed for network scanning
-  - `wkhtmltopdf` required for PDF report generation (used by `pdfkit`)
+- **Python 3.7+**
+- **Tools:**
+  - [`nmap`](https://nmap.org/) must be installed for network scanning.
+  - [`WeasyPrint`](https://weasyprint.org/) is used for PDF report generation (already included in `requirements.txt`).
 
-> 💡 **To install wkhtmltopdf**:
->
-> - Download from [https://wkhtmltopdf.org/downloads.html](https://wkhtmltopdf.org/downloads.html)
-> - During installation, make sure to **add it to your system PATH**
-> - You can verify installation by running:
->
->   ```bash
->   wkhtmltopdf --version
->   ```
+> ⚠️ On **Windows**, WeasyPrint may require native dependencies like **Cairo**, **Pango**, and **GDK-PixBuf**.
+> Follow their [Windows installation guide](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#windows) if PDF generation fails.
 
-> ⚠️ If `wkhtmltopdf` is not found or PDF generation fails, update your `PATH` or manually specify its location in the code using:
->
-> ```python
-> import pdfkit
-> config = pdfkit.configuration(wkhtmltopdf=r'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
-> pdfkit.from_string(html_content, filepath, configuration=config)
-> ```
 
 
 ---

@@ -1,5 +1,5 @@
 jinja2
-pdfkit
+weasyprint
 pandas  # optional fallback for CSV
 python-dateutil
 bandit

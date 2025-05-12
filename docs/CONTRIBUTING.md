@@ -43,7 +43,7 @@ We love contributions from the community! Here’s how you can contribute to **P
 
 ### Code of Conduct
 
-Please follow the **[Code of Conduct](./CODE_OF_CONDUCT.md)** to ensure a welcoming and respectful environment for all contributors.
+Please follow the **[Code of Conduct](../CODE_OF_CONDUCT.md)** to ensure a welcoming and respectful environment for all contributors.
 
 ### Reporting Issues
 

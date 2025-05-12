@@ -1,4 +1,0 @@
-port,protocol,service,target,scan_date
-22,tcp,ssh,github.com (20.207.73.82),2025-05-12 23:05:45
-80,tcp,http,github.com (20.207.73.82),2025-05-12 23:05:45
-443,tcp,https,github.com (20.207.73.82),2025-05-12 23:05:45

@@ -112,6 +112,7 @@ git clone https://github.com/Abhranil2003/Port-Scope.git
 cd Port-Scope
 pip install -r requirements.txt
 python -m playwright install
+playwright install winldd  # ✅ Required on Windows for PDF generation
 ```
 
 ---

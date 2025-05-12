@@ -1,0 +1,29 @@
+{
+    "scan_date": "2025-05-12 23:47:41",
+    "target": "github.com (20.207.73.82)",
+    "open_ports": [
+        {
+            "port": 22,
+            "protocol": "tcp",
+            "service": "ssh"
+        },
+        {
+            "port": 53,
+            "protocol": "tcp",
+            "service": "domain"
+        },
+        {
+            "port": 80,
+            "protocol": "tcp",
+            "service": "http"
+        },
+        {
+            "port": 443,
+            "protocol": "tcp",
+            "service": "https"
+        }
+    ],
+    "os_info": [
+        "No exact OS matches for host (test conditions non-ideal)."
+    ]
+}

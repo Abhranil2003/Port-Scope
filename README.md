@@ -92,13 +92,13 @@ project-root/
   - [`Playwright`](https://playwright.dev/python/) is used for high-fidelity PDF report generation (included in `requirements.txt`).
 
 > ⚠️ After installing dependencies with:
-> 
+>
 > ```bash
 > pip install -r requirements.txt
 > ```
-> 
+>
 > Run the following once to install Playwright browser binaries (like Chromium):
-> 
+>
 > ```bash
 > python -m playwright install
 > ```
@@ -171,6 +171,7 @@ python cli.py example.com quick -r csv --repeated --interval 60 --repetitions 3
 ```
 
 ### 📸 Report Preview Of A Sample HTML Output
+
 ![sample](https://i.postimg.cc/1XFttmQC/sample.png)
 
 ---
@@ -195,7 +196,7 @@ python cli.py example.com quick -r csv --repeated --interval 60 --repetitions 3
 ## 💬 Feedback
 
 We highly appreciate your input to make **Port Scope** better. Whether you found a bug, have a suggestion, or just want to share how you're using it—we'd love to hear from you. Feel free to open an [issue](https://github.com/Abhranil2003/Port-Scope/issues) or reach out via email:  
-📧 abhranilpoddar18@gmail.com
+📧 <abhranilpoddar18@gmail.com>
 
 ### ✉️ How to Give Feedback
 
@@ -212,7 +213,6 @@ We welcome suggestions, bug reports, or any thoughts you may have! Here’s how 
 - 🧩 "Modular structure makes it really easy to extend."
 - 📊 "Having multiple report formats is extremely helpful for documentation."
 - ⏱️ "The scheduling feature is perfect for repeated scans during monitoring windows."
-
 
 ---
 

@@ -5,7 +5,7 @@ from reporter.text_reporter import TextReporter
 from reporter.csv_reporter import CSVReporter
 from reporter.pdf_reporter import PDFReporter
 from reporter.html_reporter import HTMLReporter
-from reporter.json_reporter import JSONReporter  # Added import
+from reporter.json_reporter import JSONReporter
 from utils import get_sample_report_path
 
 def main():
@@ -52,12 +52,19 @@ def main():
         custom_options = args.custom_options.split(",") if args.custom_options else []
         scan_function = lambda: scanner.custom_scan(custom_options)
 
+    def scheduled_scan_job():
+        result = scan_function()
+        if result:
+            reporter.generate_report(result)
+
     if args.schedule:
-        thread = scheduler.schedule_scan(scan_function, delay_seconds=args.delay)
-        thread.join()  # Ensures CLI waits for the scan to complete
+        thread = scheduler.schedule_scan(scheduled_scan_job, delay_seconds=args.delay)
+        thread.join()
+
     elif args.repeated:
-        thread = scheduler.schedule_repeated_scan(scan_function, interval_seconds=args.interval, repetitions=args.repetitions)
-        thread.join()  # Ensures CLI waits for all repetitions
+        thread = scheduler.schedule_repeated_scan(scheduled_scan_job, interval_seconds=args.interval, repetitions=args.repetitions)
+        thread.join()
+
     else:
         result = scan_function()
         if result:

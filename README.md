@@ -86,14 +86,22 @@ project-root/
 ## 🛠️ Prerequisites
 
 - **Python 3.7+**
+
 - **Tools:**
-  - [`nmap`](https://nmap.org/) must be installed for network scanning.
-  - [`WeasyPrint`](https://weasyprint.org/) is used for PDF report generation (already included in `requirements.txt`).
+  - [`nmap`](https://nmap.org/) must be installed and added to your system’s PATH for port scanning to work.
+  - [`Playwright`](https://playwright.dev/python/) is used for high-fidelity PDF report generation (included in `requirements.txt`).
 
-> ⚠️ On **Windows**, WeasyPrint may require native dependencies like **Cairo**, **Pango**, and **GDK-PixBuf**.
-> Follow their [Windows installation guide](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#windows) if PDF generation fails.
-
-
+> ⚠️ After installing dependencies with:
+> 
+> ```bash
+> pip install -r requirements.txt
+> ```
+> 
+> Run the following once to install Playwright browser binaries (like Chromium):
+> 
+> ```bash
+> python -m playwright install
+> ```
 
 ---
 
@@ -103,14 +111,7 @@ project-root/
 git clone https://github.com/Abhranil2003/Port-Scope.git
 cd Port-Scope
 pip install -r requirements.txt
-```
-
-If generating PDF reports:
-```bash
-# Ubuntu/Debian
-sudo apt install wkhtmltopdf
-# macOS (Homebrew)
-brew install wkhtmltopdf
+python -m playwright install
 ```
 
 ---

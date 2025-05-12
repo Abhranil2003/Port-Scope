@@ -1,0 +1,14 @@
+Scan Report - 2025-05-13 00:03:38
+==================================================
+Target: scanme.nmap.org (45.33.32.156)
+
+Open Ports:
+ - Port 22/tcp (ssh)
+ - Port 53/tcp (domain)
+ - Port 80/tcp (http)
+ - Port 9929/tcp (nping-echo)
+ - Port 31337/tcp (tcpwrapped)
+
+OS Detection:
+ - Not detected
+==================================================

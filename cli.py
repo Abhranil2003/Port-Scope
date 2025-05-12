@@ -1,11 +1,11 @@
 import argparse
 from scanner import Scanner
 from scheduler import Scheduler
-from reporters.text_reporter import TextReporter
-from reporters.csv_reporter import CSVReporter
-from reporters.pdf_reporter import PDFReporter
-from reporters.html_reporter import HTMLReporter
-from reporters.json_reporter import JSONReporter  # Added import
+from reporter.text_reporter import TextReporter
+from reporter.csv_reporter import CSVReporter
+from reporter.pdf_reporter import PDFReporter
+from reporter.html_reporter import HTMLReporter
+from reporter.json_reporter import JSONReporter  # Added import
 from utils import get_sample_report_path
 
 def main():

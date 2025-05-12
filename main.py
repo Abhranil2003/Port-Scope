@@ -57,15 +57,15 @@ def main():
     for fmt in args.output:
         fmt = fmt.lower()
         if fmt == "csv":
-            CSVReporter(scanner, output_dir="test_reporters").generate_report(parsed_data)
+            CSVReporter(scanner, output_dir="reports").generate_report(parsed_data)
         elif fmt == "pdf":
-            PDFReporter(scanner, output_dir="test_reporters").generate_report(parsed_data)
+            PDFReporter(scanner, output_dir="reports").generate_report(parsed_data)
         elif fmt == "html":
-            HTMLReporter(scanner, output_dir="test_reporters").generate_report(parsed_data)
+            HTMLReporter(scanner, output_dir="reports").generate_report(parsed_data)
         elif fmt == "text":
-            TextReporter(scanner, output_dir="test_reporters").generate_report(parsed_data)
+            TextReporter(scanner, output_dir="reports").generate_report(parsed_data)
         elif fmt == "json":
-            JSONReporter(scanner, output_dir="test_reporters").generate_report(parsed_data)
+            JSONReporter(scanner, output_dir="reports").generate_report(parsed_data)
         else:
             logger.warning(f"⚠️ Unsupported output format: {fmt}")
 

@@ -13,7 +13,7 @@ def main():
     parser.add_argument("target", help="Target IP address or hostname")
     parser.add_argument("scan_type", choices=["quick", "full", "os", "custom"], help="Type of scan to perform")
     parser.add_argument("-c", "--custom-options", help="Custom Nmap options as a comma-separated string", default="")
-    parser.add_argument("-r", "--report-type", choices=["text", "csv", "pdf", "html", "json"], help="Report format", default="text")  # Added 'json'
+    parser.add_argument("-r", "--report-type", choices=["text", "csv", "pdf", "html", "json"], help="Report format", default="text")
     parser.add_argument("--schedule", action="store_true", help="Schedule the scan to run after a delay")
     parser.add_argument("--delay", type=int, default=10, help="Delay in seconds before starting the scan (for scheduled scan)")
     parser.add_argument("--repeated", action="store_true", help="Schedule the scan to run multiple times (repeated scan)")
@@ -39,7 +39,7 @@ def main():
         reporter = PDFReporter(scanner)
     elif args.report_type == "html":
         reporter = HTMLReporter(scanner)
-    elif args.report_type == "json":  # Added JSON handler
+    elif args.report_type == "json":
         reporter = JSONReporter()
 
     if args.scan_type == "quick":
@@ -53,9 +53,11 @@ def main():
         scan_function = lambda: scanner.custom_scan(custom_options)
 
     if args.schedule:
-        scheduler.schedule_scan(scan_function, delay_seconds=args.delay)
+        thread = scheduler.schedule_scan(scan_function, delay_seconds=args.delay)
+        thread.join()  # Ensures CLI waits for the scan to complete
     elif args.repeated:
-        scheduler.schedule_repeated_scan(scan_function, interval_seconds=args.interval, repetitions=args.repetitions)
+        thread = scheduler.schedule_repeated_scan(scan_function, interval_seconds=args.interval, repetitions=args.repetitions)
+        thread.join()  # Ensures CLI waits for all repetitions
     else:
         result = scan_function()
         if result:

@@ -35,7 +35,7 @@ project-root/
 │   
 ├── parsers/                             # Nmap & web scanner output parser
 │   ├── nmap_parser.py
-│   └──_init_.py
+│   └──__init__.py
 │     
 ├── reporter/                            # All report generators
 │   ├── html_reporter.py
@@ -43,7 +43,7 @@ project-root/
 │   ├── csv_reporter.py
 │   ├── json_reporter.py
 │   ├── text_reporter.py
-│   ├── _init_.py
+│   ├── __init__.py
 │   ├── assets/
 │   │   ├── script.js
 │   │   └── style.css
@@ -52,13 +52,13 @@ project-root/
 │
 ├── tests/                               # All test files
 │   ├── test_reporters/                  # Output directory for reports
-│   │   ├── _init_.py
+│   │   ├── __init__.py
 │   │   ├── test_csv_reporter.py
 │   │   ├── test_html_reporter.py
 │   │   ├── test_json_reporter.py
 │   │   ├── test_pdf_reporter.py
 │   │   └── test_text_reporter.py
-│   ├── _init_.py
+│   ├── __init__.py
 │   ├── test_cli.py
 │   ├── test_parser.py
 │   ├── test_scanner.py

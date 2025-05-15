@@ -1,35 +1,57 @@
-/* Additional custom styles beyond Tailwind */
-@media print {
-    body {
-      background-color: white !important;
-      color: black !important;
-    }
-    
-    .no-print {
-      display: none !important;
-    }
-    
-    .container {
-      max-width: 100% !important;
-      padding: 0 !important;
-    }
-    
-    .section-header {
-      background-color: #f3f4f6 !important;
-      color: black !important;
-    }
-    
-    .section-content {
-      display: block !important;
-    }
-    
-    button, .fa-chevron-down {
-      display: none !important;
-    }
-  }
-  
-  /* Animation for collapsible sections */
-  .section-content {
-    transition: max-height 0.3s ease-out;
-    overflow: hidden;
-  }
+/* Dark mode transitions */
+body,
+.bg-white,
+.bg-gray-50,
+.bg-gray-100,
+.bg-gray-200,
+.text-gray-800,
+.text-gray-600,
+.text-gray-500,
+.section-header,
+table th,
+table td,
+.hover\:bg-gray-50:hover,
+.hover\:bg-gray-200:hover {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode scrollbar */
+.dark::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+.dark::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+.dark::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+  border-radius: 10px;
+  border: 3px solid #1f2937;
+}
+
+.dark::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280;
+}
+
+/* Dark mode selection */
+.dark ::selection {
+  background-color: rgba(59, 130, 246, 0.5);
+  color: #f9fafb;
+}
+
+/* Theme toggle animation */
+#darkModeToggle i {
+  transition: transform 0.3s ease;
+}
+
+#darkModeToggle:hover i {
+  transform: rotate(12deg);
+}
+
+/* Dark mode focus styles */
+.dark *:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}

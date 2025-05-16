@@ -1,18 +1,17 @@
-/* Simple print styles */
 @media print {
   body {
     background-color: white;
   }
-  
+
   button {
     display: none;
   }
-  
+
   .container {
     max-width: 100%;
     padding: 0;
   }
-  
+
   .shadow-md {
     box-shadow: none !important;
   }

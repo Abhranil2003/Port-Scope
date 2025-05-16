@@ -1,17 +1,19 @@
-document.addEventListener('DOMContentLoaded', function() {
-  // Dark mode toggle
+document.addEventListener('DOMContentLoaded', function () {
   const darkModeToggle = document.getElementById('darkModeToggle');
-  
-  // Check for saved theme preference or use system preference
-  if (localStorage.getItem('darkMode') === 'true' || 
-      (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    document.documentElement.classList.add('dark');
+  if (darkModeToggle) {
+    if (
+      localStorage.getItem('darkMode') === 'true' ||
+      (!localStorage.getItem('darkMode') &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      document.documentElement.classList.add('dark');
+    }
+
+    darkModeToggle.addEventListener('click', function () {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+    });
   }
-  
-  darkModeToggle.addEventListener('click', function() {
-    document.documentElement.classList.toggle('dark');
-    localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
-  });
   
   // Collapsible sections
   const sectionHeaders = document.querySelectorAll('.section-header');

@@ -3,216 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Port Scope Report</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script>
-        tailwind.config = {
-    darkMode: 'class',
-    theme: {
-        extend: {
-            colors: {
-                primary: {
-                    50: '#f0f9ff',
-                    100: '#e0f2fe',
-                    200: '#bae6fd',
-                    300: '#7dd3fc',
-                    400: '#38bdf8',
-                    500: '#0ea5e9',
-                    600: '#0284c7',
-                    700: '#0369a1',
-                    800: '#075985',
-                    900: '#0c4a6e',
-                },
-                dark: {
-                    50: '#f9fafb',
-                    100: '#f3f4f6',
-                    200: '#e5e7eb',
-                    300: '#d1d5db',
-                    400: '#9ca3af',
-                    500: '#6b7280',
-                    600: '#4b5563',
-                    700: '#374151',
-                    800: '#1f2937',
-                    900: '#111827',
-                    950: '#030712',
-                }
-            }
-        }
-    }
-}
-    </script>
+    <title>Scan Report</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 dark:bg-dark-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
-    <div class="container mx-auto px-4 py-8 max-w-5xl transition-all duration-300">
-        <header class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-semibold text-primary-600 dark:text-primary-400">Port Scope Report</h1>
-            <button id="darkModeToggle" class="flex items-center px-3 py-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
-    <i class="fas fa-moon mr-2 dark:hidden"></i>
-    <i class="fas fa-sun mr-2 hidden dark:inline"></i>
-    <span class="dark:hidden">Dark Mode</span>
-    <span class="hidden dark:inline">Light Mode</span>
-</button>
-        </header>
+<body class="bg-gray-100 font-sans">
 
-        <!-- Target Information Section -->
-        <section class="mb-8">
-            <div class="section-header bg-primary-600 dark:bg-primary-800 text-white p-3 flex justify-between items-center cursor-pointer" data-section="target">
-                Target Information
-                <i class="fas fa-chevron-down"></i>
-            </div>
-            <div id="target" class="section-content mt-2">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <strong class="block font-medium text-gray-700 dark:text-gray-300">Target:</strong>
-                        <span>{{ parsed_data.target }}</span>
-                    </div>
-                    <div>
-                        <strong class="block font-medium text-gray-700 dark:text-gray-300">Start Time:</strong>
-                        <span>{{ parsed_data.start_time }}</span>
-                    </div>
-                    <div>
-                        <strong class="block font-medium text-gray-700 dark:text-gray-300">End Time:</strong>
-                        <span>{{ parsed_data.end_time }}</span>
-                    </div>
-                    <div>
-                        <strong class="block font-medium text-gray-700 dark:text-gray-300">Total Ports:</strong>
-                        <span>{{ parsed_data.total_ports }}</span>
-                    </div>
-                    <div>
-                        <strong class="block font-medium text-gray-700 dark:text-gray-300">Open Ports:</strong>
-                        <span>{{ parsed_data.open_ports }}</span>
-                    </div>
-                    <div>
-                        <strong class="block font-medium text-gray-700 dark:text-gray-300">Closed Ports:</strong>
-                        <span>{{ parsed_data.closed_ports }}</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">Scan Report - {{ parsed_data.scan_date }}</h1>
+
+        <!-- Target Section -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <h2 class="text-xl font-semibold text-gray-700 mb-2">Target:</h2>
+            <p class="text-gray-600">{{ parsed_data.target }}</p>
+        </div>
 
         <!-- Open Ports Section -->
-        <section class="mb-8">
-            <div class="section-header bg-primary-600 dark:bg-primary-800 text-white p-3 flex justify-between items-center cursor-pointer" data-section="openPorts">
-                Open Ports
-                <i class="fas fa-chevron-down"></i>
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <h2 class="text-xl font-semibold text-gray-700 mb-2">Open Ports:</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr class="bg-blue-500 text-white">
+                            <th class="py-2 px-4 border">Port</th>
+                            <th class="py-2 px-4 border">Protocol</th>
+                            <th class="py-2 px-4 border">Service</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for port in parsed_data.open_ports %}
+                        <tr class="{% cycle 'bg-gray-50' 'bg-white' %}">
+                            <td class="py-2 px-4 border text-center">{{ port.port }}</td>
+                            <td class="py-2 px-4 border text-center">{{ port.protocol }}</td>
+                            <td class="py-2 px-4 border text-center">{{ port.service }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            <div id="openPorts" class="section-content mt-2">
-                {% if parsed_data.open_ports_list %}
-                <ul class="list-disc list-inside">
-                    {% for port in parsed_data.open_ports_list %}
-                    <li class="text-gray-700 dark:text-gray-300">{{ port }}</li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <p class="text-gray-700 dark:text-gray-300">No open ports found.</p>
-                {% endif %}
-            </div>
-        </section>
+        </div>
 
-        <!-- Services Section -->
-        <section class="mb-8">
-            <div class="section-header bg-primary-600 dark:bg-primary-800 text-white p-3 flex justify-between items-center cursor-pointer" data-section="services">
-                Services
-                <i class="fas fa-chevron-down"></i>
-            </div>
-            <div id="services" class="section-content mt-2">
-                {% if parsed_data.services %}
-                <div class="overflow-x-auto">
-                    <table class="min-w-full table-auto">
-                        <thead class="bg-gray-200 dark:bg-gray-700 text-left">
-                            <tr>
-                                <th class="px-4 py-2 text-gray-700 dark:text-gray-300">Port</th>
-                                <th class="px-4 py-2 text-gray-700 dark:text-gray-300">Service</th>
-                                <th class="px-4 py-2 text-gray-700 dark:text-gray-300">Version</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for service in parsed_data.services %}
-                            <tr class="{% if loop.index is divisibleby(2) %}bg-gray-100 dark:bg-gray-800{% endif %}">
-                                <td class="border px-4 py-2 text-gray-700 dark:text-gray-300">{{ service.port }}</td>
-                                <td class="border px-4 py-2 text-gray-700 dark:text-gray-300">{{ service.name }}</td>
-                                <td class="border px-4 py-2 text-gray-700 dark:text-gray-300">{{ service.version }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                {% else %}
-                <p class="text-gray-700 dark:text-gray-300">No service information found.</p>
-                {% endif %}
-            </div>
-        </section>
+        <!-- OS Detection Section -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <h2 class="text-xl font-semibold text-gray-700 mb-2">OS Detection:</h2>
+            <ul class="list-disc pl-5 text-gray-600">
+                {% for os in parsed_data.os_info %}
+                <li class="mb-1">{{ os }}</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-        <!-- Vulnerabilities Section -->
-        <section class="mb-8">
-            <div class="section-header bg-primary-600 dark:bg-primary-800 text-white p-3 flex justify-between items-center cursor-pointer" data-section="vulnerabilities">
-                Vulnerabilities
-                <i class="fas fa-chevron-down"></i>
-            </div>
-            <div id="vulnerabilities" class="section-content mt-2">
-                {% if parsed_data.vulnerabilities %}
-                <ul>
-                    {% for vulnerability in parsed_data.vulnerabilities %}
-                    <li class="text-gray-700 dark:text-gray-300">{{ vulnerability }}</li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <p class="text-gray-700 dark:text-gray-300">No vulnerabilities found.</p>
-                {% endif %}
-            </div>
-        </section>
-
-        <div class="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
-    <p>Generated by <span class="font-semibold text-primary-600 dark:text-primary-400">Port Scope</span> | {{ parsed_data.scan_date }}</p>
-    <p class="mt-2">
-        <span class="inline-flex items-center dark:hidden">
-            <i class="fas fa-sun text-yellow-500 mr-1"></i> Light Theme
-        </span>
-        <span class="hidden dark:inline-flex items-center">
-            <i class="fas fa-moon text-blue-400 mr-1"></i> Dark Theme
-        </span>
-    </p>
-</div>
+        <!-- Footer -->
+        <div class="text-center text-sm text-gray-500 mt-8">
+            <p>Generated by Port Scope | {{ parsed_data.scan_date }}</p>
+        </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sectionHeaders = document.querySelectorAll('.section-header');
-
-            sectionHeaders.forEach(header => {
-                header.addEventListener('click', () => {
-                    const sectionId = header.dataset.section;
-                    const sectionContent = document.getElementById(sectionId);
-                    const icon = header.querySelector('i');
-
-                    if (sectionContent.style.display === 'none' || sectionContent.style.display === '') {
-                        sectionContent.style.display = 'block';
-                        icon.classList.remove('fa-chevron-down');
-                        icon.classList.add('fa-chevron-up');
-                    } else {
-                        sectionContent.style.display = 'none';
-                        icon.classList.remove('fa-chevron-up');
-                        icon.classList.add('fa-chevron-down');
-                    }
-                });
-            });
-
-            // Dark mode toggle
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const body = document.body;
-
-            darkModeToggle.addEventListener('click', () => {
-                body.classList.toggle('dark');
-                // Store the theme preference in localStorage
-                localStorage.setItem('theme', body.classList.contains('dark') ? 'dark' : 'light');
-            });
-
-            // On page load, check localStorage for theme preference
-            if (localStorage.getItem('theme') === 'dark') {
-                body.classList.add('dark');
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

@@ -6,6 +6,7 @@ from reporter.csv_reporter import CSVReporter
 from reporter.pdf_reporter import PDFReporter
 from reporter.html_reporter import HTMLReporter
 from reporter.json_reporter import JSONReporter
+from parsers.nmap_parser import NmapParser  
 from utils import get_sample_report_path
 
 def main():
@@ -30,6 +31,7 @@ def main():
 
     scanner = Scanner(args.target)
     scheduler = Scheduler()
+    parser_instance = NmapParser()  
 
     if args.report_type == "text":
         reporter = TextReporter(scanner)
@@ -53,9 +55,10 @@ def main():
         scan_function = lambda: scanner.custom_scan(custom_options)
 
     def scheduled_scan_job():
-        result = scan_function()
-        if result:
-            reporter.generate_report(result)
+        raw_output = scan_function()
+        if raw_output:
+            parsed_data = parser_instance.parse(raw_output)
+            reporter.generate_report(parsed_data)
 
     if args.schedule:
         thread = scheduler.schedule_scan(scheduled_scan_job, delay_seconds=args.delay)
@@ -66,9 +69,10 @@ def main():
         thread.join()
 
     else:
-        result = scan_function()
-        if result:
-            reporter.generate_report(result)
+        raw_output = scan_function()
+        if raw_output:
+            parsed_data = parser_instance.parse(raw_output)
+            reporter.generate_report(parsed_data)
 
 if __name__ == "__main__":
     main()

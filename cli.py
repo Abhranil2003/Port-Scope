@@ -6,7 +6,6 @@ from reporter.csv_reporter import CSVReporter
 from reporter.pdf_reporter import PDFReporter
 from reporter.html_reporter import HTMLReporter
 from reporter.json_reporter import JSONReporter
-from parsers.nmap_parser import NmapParser  
 from utils import get_sample_report_path
 
 def main():
@@ -31,8 +30,8 @@ def main():
 
     scanner = Scanner(args.target)
     scheduler = Scheduler()
-    parser_instance = NmapParser()  
 
+    # Set up the reporter
     if args.report_type == "text":
         reporter = TextReporter(scanner)
     elif args.report_type == "csv":
@@ -44,6 +43,7 @@ def main():
     elif args.report_type == "json":
         reporter = JSONReporter()
 
+    # Determine the scan function
     if args.scan_type == "quick":
         scan_function = scanner.quick_scan
     elif args.scan_type == "full":
@@ -54,12 +54,13 @@ def main():
         custom_options = args.custom_options.split(",") if args.custom_options else []
         scan_function = lambda: scanner.custom_scan(custom_options)
 
+    # Define the scan job for scheduled/repeated execution
     def scheduled_scan_job():
-        raw_output = scan_function()
-        if raw_output:
-            parsed_data = parser_instance.parse(raw_output)
-            reporter.generate_report(parsed_data)
+        result = scan_function()
+        if result:
+            reporter.generate_report(result)
 
+    # Execute according to schedule
     if args.schedule:
         thread = scheduler.schedule_scan(scheduled_scan_job, delay_seconds=args.delay)
         thread.join()
@@ -69,10 +70,9 @@ def main():
         thread.join()
 
     else:
-        raw_output = scan_function()
-        if raw_output:
-            parsed_data = parser_instance.parse(raw_output)
-            reporter.generate_report(parsed_data)
+        result = scan_function()
+        if result:
+            reporter.generate_report(result)
 
 if __name__ == "__main__":
     main()

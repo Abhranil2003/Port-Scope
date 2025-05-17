@@ -1,12 +1,16 @@
 import argparse
+import logging
 from scanner import Scanner
 from scheduler import Scheduler
-from reporter.text_reporter import TextReporter
-from reporter.csv_reporter import CSVReporter
-from reporter.pdf_reporter import PDFReporter
-from reporter.html_reporter import HTMLReporter
-from reporter.json_reporter import JSONReporter
-from utils import get_sample_report_path
+from reporters.text_reporter import TextReporter
+from reporters.csv_reporter import CSVReporter
+from reporters.pdf_reporter import PDFReporter
+from reporters.html_reporter import HTMLReporter
+from reporters.json_reporter import JSONReporter
+from utils import get_sample_report_path, sanitize_custom_options
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def main():
     parser = argparse.ArgumentParser(description="Port Scanner CLI Tool")
@@ -31,7 +35,6 @@ def main():
     scanner = Scanner(args.target)
     scheduler = Scheduler()
 
-    # Set up the reporter
     if args.report_type == "text":
         reporter = TextReporter(scanner)
     elif args.report_type == "csv":
@@ -41,9 +44,9 @@ def main():
     elif args.report_type == "html":
         reporter = HTMLReporter(scanner)
     elif args.report_type == "json":
-        reporter = JSONReporter()
+        reporter = JSONReporter(scanner)
 
-    # Determine the scan function
+    scan_function = None
     if args.scan_type == "quick":
         scan_function = scanner.quick_scan
     elif args.scan_type == "full":
@@ -52,23 +55,17 @@ def main():
         scan_function = scanner.os_detection_scan
     elif args.scan_type == "custom":
         custom_options = args.custom_options.split(",") if args.custom_options else []
-        scan_function = lambda: scanner.custom_scan(custom_options)
+        try:
+            safe_options = sanitize_custom_options(custom_options)
+            scan_function = lambda: scanner.custom_scan(safe_options)
+        except ValueError as ve:
+            print(str(ve))
+            return
 
-    # Define the scan job for scheduled/repeated execution
-    def scheduled_scan_job():
-        result = scan_function()
-        if result:
-            reporter.generate_report(result)
-
-    # Execute according to schedule
     if args.schedule:
-        thread = scheduler.schedule_scan(scheduled_scan_job, delay_seconds=args.delay)
-        thread.join()
-
+        scheduler.schedule_scan(scan_function, delay_seconds=args.delay)
     elif args.repeated:
-        thread = scheduler.schedule_repeated_scan(scheduled_scan_job, interval_seconds=args.interval, repetitions=args.repetitions)
-        thread.join()
-
+        scheduler.schedule_repeated_scan(scan_function, interval_seconds=args.interval, repetitions=args.repetitions)
     else:
         result = scan_function()
         if result:

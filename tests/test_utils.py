@@ -1,34 +1,24 @@
-# tests/test_utils.py
+import pytest
+from utils import sanitize_custom_options
 
-import unittest
-from utils import validate_ip, validate_report_type
-from unittest.mock import patch
+def test_sanitize_custom_options_valid():
+    valid_options = ["-sS", "-Pn", "-T4", "-p22,80", "--top-ports", "-v"]
+    sanitized = sanitize_custom_options(valid_options)
+    assert sanitized == valid_options
 
-class TestUtils(unittest.TestCase):
+def test_sanitize_custom_options_with_mixed_valid_and_prefixes():
+    options = ["-sS", "-p22,80", "--top-ports", "-T3"]
+    sanitized = sanitize_custom_options(options)
+    assert sanitized == options
 
-    def test_validate_ip_valid(self):
-        """Test that a valid IP address is accepted."""
-        valid_ip = "192.168.1.1"
-        result = validate_ip(valid_ip)
-        self.assertTrue(result)
+def test_sanitize_custom_options_raises_on_invalid():
+    with pytest.raises(ValueError) as excinfo:
+        sanitize_custom_options(["-sS", "--evil-flag"])
+    assert "❌ Unsafe or unsupported Nmap option" in str(excinfo.value)
 
-    def test_validate_ip_invalid(self):
-        """Test that an invalid IP address is rejected."""
-        invalid_ip = "999.999.999.999"
-        result = validate_ip(invalid_ip)
-        self.assertFalse(result)
+def test_sanitize_custom_options_empty_list():
+    assert sanitize_custom_options([]) == []
 
-    def test_validate_report_type_valid(self):
-        """Test that a valid report type is accepted."""
-        valid_report_type = "text"
-        result = validate_report_type(valid_report_type)
-        self.assertTrue(result)
-
-    def test_validate_report_type_invalid(self):
-        """Test that an invalid report type is rejected."""
-        invalid_report_type = "docx"
-        result = validate_report_type(invalid_report_type)
-        self.assertFalse(result)
-
-if __name__ == "__main__":
-    unittest.main()
+def test_sanitize_custom_options_partial_injection():
+    with pytest.raises(ValueError):
+        sanitize_custom_options(["-sS", "; rm -rf /"])

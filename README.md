@@ -1,4 +1,4 @@
-# 🔒 Port Scope ![CI](https://github.com/Abhranil2003/Port-Scope/actions/workflows/python-ci.yml/badge.svg)
+# 🔒 Port Scope
 
 Port Scope is a powerful and flexible port scanning tool designed to detect open ports and alert users of any potential unauthorized entries on a target system or network. It combines the reliability of Nmap with multi-format reporting capabilities including CSV, PDF, HTML, JSON, and plain text — making it easier to analyze and document scan results.
 
@@ -180,60 +180,6 @@ python cli.py example.com quick -r csv --repeated --interval 60 --repetitions 3
 
 - Test JSON/Text output with test values using `scanner.py`
 - Use mocked responses for development if nmap is not available
-
----
-
-## 🔁 Continuous Integration (CI/CD)
-
-Port Scope includes automated testing through **GitHub Actions** to ensure code quality, prevent regressions, and streamline contributions.
-
-### ✅ What’s Covered
-
-- 🔍 Linting (via `flake8`)
-- ✅ Unit testing using `unittest`
-- 🔄 Automatic checks on every push or pull request to `main`
-
-### 🛠️ Setup
-
-The CI workflow is defined in `.github/workflows/python-ci.yml`. Here's how it works:
-
-```yaml
-name: Python CI for PortScope
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: 📥 Checkout Repository
-      uses: actions/checkout@v3
-
-    - name: 🐍 Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-
-    - name: 📦 Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install -r test-requirements.txt || true
-
-    - name: ✅ Run Tests
-      run: |
-        python -m unittest discover -s tests
-
-    - name: 🧹 Lint with Flake8 (Optional)
-      run: |
-        pip install flake8
-        flake8 . --exclude=tests,venv,__pycache__ --max-line-length=120
-```
 
 ---
 

@@ -6,6 +6,3 @@ requests
 beautifulsoup4
 playwright
 pytest
-flake8
-scapy
-tabulate
